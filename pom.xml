@@ -214,6 +214,8 @@
                             <id>repackage</id>
                             <goals>
                                 <goal>repackage</goal>
+                                <!-- Writes META-INF/build-info.properties so /actuator/info shows build version and time -->
+                                <goal>build-info</goal>
                             </goals>
                         </execution>
                     </executions>
