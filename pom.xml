@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Line above is the XML declaration: XML version 1.0, saved in UTF-8 encoding. It must stay the very first line -->
+
+<!-- Root element of every Maven POM. xmlns is the default namespace of the POM, xmlns:xsi declares the XML Schema Instance namespace, and xsi:schemaLocation tells the parser where the schema (XSD) lives so IDEs can validate and auto-complete the file -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!-- Version of the POM structure itself. Maven always uses 4.0.0 -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Group ID: the organization namespace that uniquely identifies the company/project owner -->
+    <groupId>com.cityglam</groupId>
+
+    <!-- Artifact ID: name of this project. Child modules like eurekaserver refer to it as their parent -->
+    <artifactId>Bom</artifactId>
+
+    <!-- Version of this BOM. SNAPSHOT means it is still in development, not a final release -->
+    <version>0.0.1-SNAPSHOT</version>
+
+    <!-- Human-readable name shown in IDEs and Maven output -->
+    <name>Bom</name>
+
+    <!-- Short description: this POM holds the common versions and settings shared by all city glam microservices -->
+    <description>Provides centralized dependency and version management for all city glam microservices, ensuring
+        consistent and compatible library versions across the entire project.
+    </description>
+
+    <!-- Packaging type pom: this project produces no JAR or WAR, it only exists to be inherited from or to group modules -->
+    <packaging>pom</packaging>
+
+    <!-- Project website URL (informational metadata) -->
+    <url>https://orbitosdemo.cityglamexpress.com</url>
+
+    <!-- LICENSES: legal license information for this project (informational metadata) -->
+    <licenses>
+        <license>
+            <!-- Name of the license: Apache License 2.0 -->
+            <name>Apache License, Version 2.0</name>
+            <!-- Link to the full text of the license -->
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+
+    <!-- DEVELOPERS: people who maintain the project (informational metadata) -->
+    <developers>
+        <!-- Start of one developer entry -->
+        <developer>
+            <!-- Developer's name -->
+            <name>Jay Pansuriya</name>
+            <!-- Developer's contact email -->
+            <email>jay.java.sfd@gmail.com</email>
+            <!-- Organization the developer belongs to -->
+            <organization>khodal it solution</organization>
+            <!-- Website of that organization -->
+            <organizationUrl>www.khodal.it.solution.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <!-- SCM: Source Control Management, where the source code is hosted -->
+    <scm>
+        <!-- URL of the Git repository -->
+        <url>https://github.com/jay-java-developer</url>
+    </scm>
+
+    <!-- PROPERTIES: named values defined once here and reused anywhere as ${name}. Child POMs inherit them, so versions are controlled from one place -->
+    <properties>
+        <!-- Version of the company's own shared common library -->
+        <common-lib.version>1.0.0</common-lib.version>
+
+        <!-- Spring Boot version used by all microservices -->
+        <spring-boot.version>4.0.0</spring-boot.version>
+
+        <!-- Java version used by the project (Java 21) -->
+        <java.version>21</java.version>
+
+        <!-- Java version that the source code is written for -->
+        <maven.compiler.source>21</maven.compiler.source>
+
+        <!-- Java version that the compiled bytecode is built for -->
+        <maven.compiler.target>21</maven.compiler.target>
+
+        <!-- Spring Cloud release train version (must be compatible with the Spring Boot version) -->
+        <spring-cloud.version>2025.1.0</spring-cloud.version>
+
+        <!-- springdoc-openapi version, used for Swagger UI and API documentation -->
+        <spring-doc.version>2.8.14</spring-doc.version>
+
+        <!-- Lombok version, which generates getters, setters and constructors at compile time -->
+        <lombok.version>1.18.42</lombok.version>
+
+        <!-- OpenTelemetry Java agent version, used by the child POMs for tracing -->
+        <otel.version>2.22.0</otel.version>
+
+        <!-- Micrometer version, used by the child POMs for metrics -->
+        <micrometer.version>1.16.0</micrometer.version>
+
+        <!-- Jib Maven plugin version, used to build Docker images -->
+        <jib.version>3.5.1</jib.version>
+
+        <!-- Docker image tag (s20 = section 20). Child POMs use it as cityglam/artifactId:s20 -->
+        <image.tag>s20</image.tag>
+    </properties>
+
+    <!-- MODULES: child projects that are built together when Maven runs on this POM -->
+    <modules>
+        <!-- The common sub-folder is built as a module of this project -->
+        <module>common</module>
+    </modules>
+
+    <!-- DEPENDENCIES: libraries added automatically to every child project that inherits from this POM -->
+    <dependencies>
+        <!-- Start of the dependency every child project gets -->
+        <dependency>
+            <!-- Spring Boot's group ID -->
+            <groupId>org.springframework.boot</groupId>
+            <!-- Test starter: JUnit, Mockito, AssertJ and Spring test support in one package -->
+            <artifactId>spring-boot-starter-test</artifactId>
+            <!-- test scope: available only when running tests, not packaged into the final application -->
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- DEPENDENCY MANAGEMENT: only decides WHICH VERSION to use. Nothing here is added to a project until a child lists it in its own dependencies -->
+    <dependencyManagement>
+        <!-- List of managed dependencies -->
+        <dependencies>
+            <!-- Start of the Spring Boot BOM import -->
+            <dependency>
+                <!-- Spring Boot's group ID -->
+                <groupId>org.springframework.boot</groupId>
+                <!-- Spring Boot's own BOM: a list of tested, compatible versions for hundreds of libraries -->
+                <artifactId>spring-boot-dependencies</artifactId>
+                <!-- Version taken from the spring-boot.version property above -->
+                <version>${spring-boot.version}</version>
+                <!-- type pom: this dependency is a POM file, not a JAR -->
+                <type>pom</type>
+                <!-- import scope: copies all the managed versions from that POM into this one, so children need not write versions for Spring libraries -->
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Start of the Lombok entry -->
+            <dependency>
+                <!-- Lombok's group ID -->
+                <groupId>org.projectlombok</groupId>
+                <!-- Lombok library -->
+                <artifactId>lombok</artifactId>
+                <!-- Version taken from the lombok.version property -->
+                <version>${lombok.version}</version>
+                <!-- type pom with import scope is meant for BOM files. Lombok is a normal JAR, so this entry may not work as intended (see the notes in the reply) -->
+                <type>pom</type>
+                <!-- import scope: pull the managed versions from that POM into this one -->
+                <scope>import</scope>
+            </dependency>
+
+
+            <!-- Start of the springdoc entry -->
+            <dependency>
+                <!-- springdoc's group ID -->
+                <groupId>org.springdoc</groupId>
+                <!-- Generates OpenAPI documentation and the Swagger UI page for Spring MVC apps -->
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <!-- Version taken from the spring-doc.version property -->
+                <version>${spring-doc.version}</version>
+                <!-- type pom, same note as Lombok: this is normally a JAR, not a BOM -->
+                <type>pom</type>
+                <!-- import scope: pull the managed versions from that POM into this one -->
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Start of the managed test starter entry -->
+            <dependency>
+                <!-- Spring Boot's group ID -->
+                <groupId>org.springframework.boot</groupId>
+                <!-- Test starter, with its version fixed here -->
+                <artifactId>spring-boot-starter-test</artifactId>
+                <!-- Version taken from the spring-boot.version property -->
+                <version>${spring-boot.version}</version>
+                <!-- test scope: used only for running tests -->
+                <scope>test</scope>
+            </dependency>
+
+            <!-- Start of the Spring Cloud BOM import -->
+            <dependency>
+                <!-- Spring Cloud's group ID -->
+                <groupId>org.springframework.cloud</groupId>
+                <!-- Spring Cloud's BOM: compatible versions of Eureka, Config, Gateway and other Spring Cloud libraries -->
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <!-- Version taken from the spring-cloud.version property -->
+                <version>${spring-cloud.version}</version>
+                <!-- type pom: this dependency is a POM file, not a JAR -->
+                <type>pom</type>
+                <!-- import scope: copies all the managed versions into this POM, so children need not write versions for Spring Cloud libraries -->
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+
+    <!-- BUILD: how the project is built and packaged -->
+    <build>
+        <!-- Pin plugin versions for every child module. Without this, Maven warns and may pick an arbitrary
+             spring-boot-maven-plugin version, because this parent does not inherit spring-boot-starter-parent -->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot.version}</version>
+                    <!-- spring-boot-starter-parent normally binds this; without it "java -jar" fails with
+                         "no main manifest attribute" because the JAR is never repackaged -->
+                    <executions>
+                        <execution>
+                            <id>repackage</id>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <!-- List of Maven plugins used during the build -->
+        <plugins>
+            <!-- Start of the Spring Boot plugin -->
+            <plugin>
+                <!-- Spring Boot's group ID -->
+                <groupId>org.springframework.boot</groupId>
+                <!-- Spring Boot Maven plugin: packages the app as an executable JAR and adds commands such as spring-boot:run. Its version comes from the Spring Boot BOM -->
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
