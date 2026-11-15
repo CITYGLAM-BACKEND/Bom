@@ -64,9 +64,6 @@
 
     <!-- PROPERTIES: named values defined once here and reused anywhere as ${name}. Child POMs inherit them, so versions are controlled from one place -->
     <properties>
-        <!-- Version of the company's own shared common library -->
-        <common-lib.version>1.0.0</common-lib.version>
-
         <!-- Spring Boot version used by all microservices -->
         <spring-boot.version>4.0.0</spring-boot.version>
 
@@ -88,9 +85,6 @@
         <!-- Lombok version, which generates getters, setters and constructors at compile time -->
         <lombok.version>1.18.42</lombok.version>
 
-        <!-- OpenTelemetry Java agent version, used by the child POMs for tracing -->
-        <otel.version>2.22.0</otel.version>
-
         <!-- Micrometer version, used by the child POMs for metrics -->
         <micrometer.version>1.16.0</micrometer.version>
 
@@ -100,12 +94,6 @@
         <!-- Docker image tag (s20 = section 20). Child POMs use it as cityglam/artifactId:s20 -->
         <image.tag>s20</image.tag>
     </properties>
-
-    <!-- MODULES: child projects that are built together when Maven runs on this POM -->
-    <modules>
-        <!-- The common sub-folder is built as a module of this project -->
-        <module>common</module>
-    </modules>
 
     <!-- DEPENDENCIES: libraries added automatically to every child project that inherits from this POM -->
     <dependencies>
@@ -135,35 +123,6 @@
                 <!-- type pom: this dependency is a POM file, not a JAR -->
                 <type>pom</type>
                 <!-- import scope: copies all the managed versions from that POM into this one, so children need not write versions for Spring libraries -->
-                <scope>import</scope>
-            </dependency>
-
-            <!-- Start of the Lombok entry -->
-            <dependency>
-                <!-- Lombok's group ID -->
-                <groupId>org.projectlombok</groupId>
-                <!-- Lombok library -->
-                <artifactId>lombok</artifactId>
-                <!-- Version taken from the lombok.version property -->
-                <version>${lombok.version}</version>
-                <!-- type pom with import scope is meant for BOM files. Lombok is a normal JAR, so this entry may not work as intended (see the notes in the reply) -->
-                <type>pom</type>
-                <!-- import scope: pull the managed versions from that POM into this one -->
-                <scope>import</scope>
-            </dependency>
-
-
-            <!-- Start of the springdoc entry -->
-            <dependency>
-                <!-- springdoc's group ID -->
-                <groupId>org.springdoc</groupId>
-                <!-- Generates OpenAPI documentation and the Swagger UI page for Spring MVC apps -->
-                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-                <!-- Version taken from the spring-doc.version property -->
-                <version>${spring-doc.version}</version>
-                <!-- type pom, same note as Lombok: this is normally a JAR, not a BOM -->
-                <type>pom</type>
-                <!-- import scope: pull the managed versions from that POM into this one -->
                 <scope>import</scope>
             </dependency>
 
