@@ -83,7 +83,7 @@
         <spring-cloud.version>2025.1.0</spring-cloud.version>
 
         <!-- springdoc-openapi version, used for Swagger UI and API documentation -->
-        <spring-doc.version>2.8.14</spring-doc.version>
+        <spring-doc.version>3.0.3</spring-doc.version>
 
         <!-- Lombok version, which generates getters, setters and constructors at compile time -->
         <lombok.version>1.18.42</lombok.version>
@@ -224,6 +224,20 @@
         </pluginManagement>
         <!-- List of Maven plugins used during the build -->
         <plugins>
+            <!-- Start of the Java compiler plugin -->
+            <plugin>
+                <!-- Maven's own group ID -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <!-- Compiles the Java sources -->
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <!-- Compile for Java 21 -->
+                    <release>${java.version}</release>
+                    <!-- Keep method parameter names in the bytecode. Spring needs them for @PathVariable,
+                         @RequestParam, constructor binding, ... (spring-boot-starter-parent normally sets this) -->
+                    <parameters>true</parameters>
+                </configuration>
+            </plugin>
             <!-- Start of the Spring Boot plugin -->
             <plugin>
                 <!-- Spring Boot's group ID -->
