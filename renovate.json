@@ -1,0 +1,41 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "City Glam: automatic dependency updates. Install the Renovate GitHub App on the CITYGLAM-BACKEND organisation to activate.",
+  "extends": ["config:recommended", "docker:enableMajor", ":dependencyDashboard"],
+  "timezone": "Asia/Kolkata",
+  "schedule": ["before 6am on monday"],
+  "labels": ["dependencies"],
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2,
+  "baseBranches": ["development"],
+  "packageRules": [
+    {
+      "description": "Spring Boot, Spring Cloud and Micrometer move together (they must stay compatible)",
+      "matchPackageNames": ["org.springframework.boot:**", "org.springframework.cloud:**", "io.micrometer:**"],
+      "groupName": "Spring platform"
+    },
+    {
+      "description": "Patch updates merge automatically once the CI pipeline (build + all tests + scans) passes",
+      "matchUpdateTypes": ["patch"],
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
+    },
+    {
+      "description": "Major updates need a human review and a migration check",
+      "matchUpdateTypes": ["major"],
+      "labels": ["dependencies", "major-update"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Base images in Dockerfiles: keep Java on the 25 LTS line",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["eclipse-temurin", "maven"],
+      "allowedVersions": "/25/"
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "labels": ["security"],
+    "schedule": ["at any time"]
+  }
+}

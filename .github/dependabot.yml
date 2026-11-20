@@ -1,0 +1,11 @@
+# Alternative to Renovate (use one of the two): weekly pull requests for the shared Maven versions.
+version: 2
+updates:
+  - package-ecosystem: maven
+    directory: /
+    target-branch: development
+    schedule: { interval: weekly, day: monday }
+    labels: [dependencies]
+    groups:
+      spring-platform:
+        patterns: ["org.springframework.boot*", "org.springframework.cloud*", "io.micrometer*"]
