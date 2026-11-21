@@ -94,6 +94,9 @@
 
         <!-- Guava security pin (see dependencyManagement) -->
         <guava.version>33.8.0-jre</guava.version>
+        <!-- Security pins of the Kafka client compression libraries (see dependencyManagement) -->
+        <lz4-java.version>1.11.4</lz4-java.version>
+        <snappy-java.version>1.1.10.9</snappy-java.version>
     </properties>
 
     <!-- DEPENDENCIES: libraries added automatically to every child project that inherits from this POM -->
@@ -119,6 +122,19 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+            <!-- Security pins: compression libraries of the Kafka client (every business service). lz4-java 1.11.2 has a
+                 HIGH arbitrary-code-execution CVE (CVE-2026-106451), snappy-java 1.1.10.7 two HIGH ones (CVE-2026-108106,
+                 CVE-2026-93451); found by the Trivy dependency scan. Force the fixed releases. Listed first so they win. -->
+            <dependency>
+                <groupId>at.yawk.lz4</groupId>
+                <artifactId>lz4-java</artifactId>
+                <version>${lz4-java.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.xerial.snappy</groupId>
+                <artifactId>snappy-java</artifactId>
+                <version>${snappy-java.version}</version>
             </dependency>
 
             <!-- Start of the Spring Boot BOM import -->
