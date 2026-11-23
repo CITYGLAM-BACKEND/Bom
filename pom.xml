@@ -83,6 +83,9 @@
         <!-- Lombok version, which generates getters, setters and constructors at compile time -->
         <lombok.version>1.18.48</lombok.version>
 
+        <!-- Pin compiler plugin version for Java 25 and explicit annotation processor support -->
+        <maven-compiler-plugin.version>3.16.0</maven-compiler-plugin.version>
+
         <!-- Micrometer version, used by the child POMs for metrics -->
         <micrometer.version>1.18.0</micrometer.version>
 
@@ -116,6 +119,12 @@
     <dependencyManagement>
         <!-- List of managed dependencies -->
         <dependencies>
+            <!-- Lombok is opt-in per service; this only centralizes its version -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
             <!-- Security pin: Guava comes in through Eureka (Netflix) at 33.0.0, which has a HIGH denial-of-service
                  CVE (found by the Trivy image scan); force the fixed release for every service. Listed first so it wins. -->
             <dependency>
@@ -214,12 +223,21 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <!-- Compiles the Java sources -->
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <!-- Compile for the Java version in java.version (25 LTS) -->
                     <release>${java.version}</release>
                     <!-- Keep method parameter names in the bytecode. Spring needs them for @PathVariable,
                          @RequestParam, constructor binding, ... (spring-boot-starter-parent normally sets this) -->
                     <parameters>true</parameters>
+                    <!-- JDK 23+ requires annotation processors to be listed explicitly. -->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <!-- Start of the Spring Boot plugin -->
