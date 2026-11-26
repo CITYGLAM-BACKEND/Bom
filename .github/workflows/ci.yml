@@ -1,0 +1,40 @@
+name: bom-ci
+
+# Builds and tests the parent POM and the shared library (common) that every service depends on.
+on:
+  push:
+    branches: [development, main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Bom
+        uses: actions/checkout@v7
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 25
+          cache: maven
+
+      - name: Install parent POM
+        run: mvn -B -q -f pom.xml -N install
+
+      # Compile + unit tests of the shared library
+      - name: Build and test common
+        run: mvn -B -f common/pom.xml verify
+
+      - name: Dependency scan (Trivy filesystem)
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: HIGH,CRITICAL
+          exit-code: "1"
+          ignore-unfixed: true

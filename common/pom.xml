@@ -67,12 +67,40 @@
 
     <!-- DEPENDENCIES: libraries Maven downloads and adds to the classpath of this module -->
     <dependencies>
-        <!-- Start of the Spring MVC dependency -->
+        <!-- common is used by the servlet services AND the reactive Api-Gateway, so it must not pull in Spring MVC or
+             WebFlux. It only needs the plain types below; versions come from the Spring Boot BOM in the parent -->
+        <!-- spring-web: HttpStatus, HttpHeaders, ResponseEntity and RequestContextHolder -->
         <dependency>
-            <!-- Spring Boot's group ID -->
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <!-- Jackson annotations: @JsonInclude / @JsonValue on the response DTOs -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        <!-- Auto-configuration of the message reader (MessagesAutoConfiguration). Every service already has it -->
+        <dependency>
             <groupId>org.springframework.boot</groupId>
-            <!-- Spring Boot web starter for Spring MVC: gives REST controllers, JSON support and an embedded server. Version comes from the Spring Boot BOM in the parent, so none is written here -->
-            <artifactId>spring-boot-starter-webmvc</artifactId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <!-- Redis: the response messages live there (written by Master-Data-Service, read by every service). Not
+             optional: every service that depends on common gets the Redis client and its auto-configuration -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <!-- Logging API (every service has it through Spring Boot) -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <!-- Servlet API for ApiResponses (servlet services). provided: every servlet service has it already, the
+             reactive gateway never uses ApiResponses and does not get the servlet API through common -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Start of the Lombok dependency -->
@@ -87,14 +115,11 @@
             <version>${lombok.version}</version>
         </dependency>
 
-        <!-- Start of the springdoc dependency -->
+        <!-- OpenAPI @Schema annotations only (no Swagger UI, no Spring MVC). Same version springdoc 3.2.0 uses -->
         <dependency>
-            <!-- springdoc's group ID -->
-            <groupId>org.springdoc</groupId>
-            <!-- springdoc OpenAPI starter: generates API documentation and the Swagger UI page for Spring MVC apps -->
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <!-- Version taken from the spring-doc.version property in the parent. A version is written here because the parent's import of this library does not reliably manage it -->
-            <version>${spring-doc.version}</version>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations-jakarta</artifactId>
+            <version>2.2.55</version>
         </dependency>
     </dependencies>
 

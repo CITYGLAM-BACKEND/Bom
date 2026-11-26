@@ -65,14 +65,9 @@
         <!-- Spring Boot version used by all microservices -->
         <spring-boot.version>4.2.0</spring-boot.version>
 
-        <!-- Java version used by the project (Java 21) -->
+        <!-- Java version of the whole project (25 LTS): the compiler plugin uses it as release (source, target and
+             API together), so there are no separate maven.compiler.source / target values to drift apart -->
         <java.version>25</java.version>
-
-        <!-- Java version that the source code is written for -->
-        <maven.compiler.source>21</maven.compiler.source>
-
-        <!-- Java version that the compiled bytecode is built for -->
-        <maven.compiler.target>21</maven.compiler.target>
 
         <!-- Spring Cloud release train version (must be compatible with the Spring Boot version) -->
         <spring-cloud.version>2026.0.0</spring-cloud.version>
@@ -92,7 +87,8 @@
         <!-- Jib Maven plugin version, used to build Docker images -->
         <jib.version>3.5.2</jib.version>
 
-        <!-- Docker image tag (s20 = section 20). Child POMs use it as cityglam/artifactId:s20 -->
+        <!-- Tag of the optional Jib image build (mvn jib:dockerBuild) in Api-Gateway, Config-Server, Service-Registry.
+             The real images come from the Dockerfiles, tagged <version>-<git sha> by CI -->
         <image.tag>s20</image.tag>
 
         <!-- Guava security pin (see dependencyManagement) -->
@@ -100,6 +96,9 @@
         <!-- Security pins of the Kafka client compression libraries (see dependencyManagement) -->
         <lz4-java.version>1.11.4</lz4-java.version>
         <snappy-java.version>1.1.10.9</snappy-java.version>
+
+        <!-- Version of the shared common library (ApiResponseDto, ResponseCode, ApiException). Bom/common reads it too -->
+        <common-lib.version>1.0.0</common-lib.version>
     </properties>
 
     <!-- DEPENDENCIES: libraries added automatically to every child project that inherits from this POM -->
@@ -119,6 +118,12 @@
     <dependencyManagement>
         <!-- List of managed dependencies -->
         <dependencies>
+            <!-- Shared City Glam library: common response envelope, response-code catalog and ApiException -->
+            <dependency>
+                <groupId>com.cityglam</groupId>
+                <artifactId>common</artifactId>
+                <version>${common-lib.version}</version>
+            </dependency>
             <!-- Lombok is opt-in per service; this only centralizes its version -->
             <dependency>
                 <groupId>org.projectlombok</groupId>

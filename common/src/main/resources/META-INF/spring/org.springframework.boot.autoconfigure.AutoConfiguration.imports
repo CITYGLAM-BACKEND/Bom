@@ -1,0 +1,2 @@
+com.city.glam.common.redis.RedisStoresAutoConfiguration
+com.city.glam.common.message.MessagesAutoConfiguration
