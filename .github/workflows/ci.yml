@@ -3,7 +3,7 @@ name: bom-ci
 # Builds and tests the parent POM and the shared library (common) that every service depends on.
 on:
   push:
-    branches: [development, main]
+    branches: [development, demo]
   pull_request:
 
 permissions:
