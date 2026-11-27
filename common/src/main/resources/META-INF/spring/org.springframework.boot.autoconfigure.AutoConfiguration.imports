@@ -1,2 +1,3 @@
 com.city.glam.common.redis.RedisStoresAutoConfiguration
 com.city.glam.common.message.MessagesAutoConfiguration
+com.city.glam.common.flyway.TableWiseFlywayAutoConfiguration

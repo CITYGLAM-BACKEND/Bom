@@ -121,6 +121,13 @@
             <artifactId>swagger-annotations-jakarta</artifactId>
             <version>2.2.55</version>
         </dependency>
+        <!-- Table-wise Flyway (db/migration/<table>/V1__..., one history per table). Optional: only services that
+             have Flyway themselves (and a db/migration/order.txt) use it -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-flyway</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>
