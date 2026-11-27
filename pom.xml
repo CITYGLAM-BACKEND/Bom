@@ -81,8 +81,8 @@
         <!-- Pin compiler plugin version for Java 25 and explicit annotation processor support -->
         <maven-compiler-plugin.version>3.16.0</maven-compiler-plugin.version>
 
-        <!-- Micrometer version, used by the child POMs for metrics -->
-        <micrometer.version>1.18.0</micrometer.version>
+        <!-- Micrometer (metrics, micrometer-registry-prometheus) is NOT pinned here: the Spring Boot BOM imports
+             micrometer-bom, so it always matches the Boot version (a separate pin could drift from it) -->
 
         <!-- Jib Maven plugin version, used to build Docker images -->
         <jib.version>3.5.2</jib.version>
