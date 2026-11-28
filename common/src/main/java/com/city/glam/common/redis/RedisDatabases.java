@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
  *
  * @param session  0: session values
  * @param uniqueId 1: unique ids (UUIDs and other one-time / unique values)
- * @param messages 2: response messages, keys {@code cityglam:messages:<screen>:<code>}
+ * @param messages 2: response messages, keys {@code cityglam:messages:<application>:<module>:<page>:<component>:<code>, lower case}
  */
 @ConfigurationProperties(prefix = "cityglam.redis.databases")
 public record RedisDatabases(

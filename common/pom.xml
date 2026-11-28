@@ -121,6 +121,13 @@
             <artifactId>swagger-annotations-jakarta</artifactId>
             <version>2.2.55</version>
         </dependency>
+        <!-- Message export (JSON files for the frontend): checks a written file by reading it back. Optional: the
+             services that export have Jackson through their web starter -->
+        <dependency>
+            <groupId>tools.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <optional>true</optional>
+        </dependency>
         <!-- Table-wise Flyway (db/migration/<table>/V1__..., one history per table). Optional: only services that
              have Flyway themselves (and a db/migration/order.txt) use it -->
         <dependency>

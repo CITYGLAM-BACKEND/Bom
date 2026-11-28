@@ -42,8 +42,8 @@ class RedisMessagesTests {
 
     @Test
     void publisherWritesOneHashPerScreenAndCode() {
-        assertThat(REDIS).containsKey("cityglam:messages:ORBIT/MASTER_DATA/CONTINENT/CONTINENT_FORM:20003");
-        assertThat(REDIS.get("cityglam:messages:ORBIT/MASTER_DATA/CONTINENT/CONTINENT_FORM:20003")).containsExactlyInAnyOrderEntriesOf(Map.of(
+        assertThat(REDIS).containsKey("cityglam:messages:orbit:master_data:continent:continent_form:20003");
+        assertThat(REDIS.get("cityglam:messages:orbit:master_data:continent:continent_form:20003")).containsExactlyInAnyOrderEntriesOf(Map.of(
                 "type", "WARNING",
                 "default", "A continent with code {0} already exists",
                 "default-language", "en",

@@ -16,7 +16,7 @@ import java.util.List;
  * <ul>
  *     <li>{@link #session()}  database 0: session values</li>
  *     <li>{@link #uniqueIds()} database 1: unique ids (UUIDs and other unique values)</li>
- *     <li>{@link #messages()} database 2: response messages ({@code cityglam:messages:<screen>:<code>})</li>
+ *     <li>{@link #messages()} database 2: response messages ({@code cityglam:messages:<application>:<module>:<page>:<component>:<code>, lower case})</li>
  * </ul>
  * Inject this bean and pick the database: {@code stores.uniqueIds().opsForValue().setIfAbsent(...)}. The numbers can be
  * changed with {@code cityglam.redis.databases.*}. Spring's default {@code StringRedisTemplate} stays on
